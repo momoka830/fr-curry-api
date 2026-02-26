@@ -1,7 +1,7 @@
 // controllers: services(なければ直接models)を呼び出してレスポンスを返すファイル
 import type { Request, Response } from "express";
 import { createUser, getUsers } from "../models/users.js";
-import { createOrder, getOrder } from "../models/order.js";
+import { createOrder, deleteOrder, getOrder } from "../models/order.js";
 
 export const getOrderController = async (req: Request, res: Response) => {
   try {
@@ -26,6 +26,17 @@ export const createOrderController = async (req: Request, res: Response) => {
     const total_price = req.body.total_price as number;
     const user = await createOrder(user_id, total_price);
     res.status(201).json(user);
+  } catch (error) {
+    console.error("コントローラー内エラー", error);
+    res.status(500).json({ message: "error" });
+  }
+};
+
+export const deleteOrderController = async (req: Request, res: Response) => {
+  try {
+    const id = Number.parseInt(req.params.id);
+    const order = await deleteOrder(id);
+    res.status(200).json(order);
   } catch (error) {
     console.error("コントローラー内エラー", error);
     res.status(500).json({ message: "error" });
