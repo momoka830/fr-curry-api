@@ -4,6 +4,7 @@ import express from "express";
 import {
   getOrderController,
   createOrderController,
+  deleteOrderController,
 } from "../controllers/order.js";
 
 // URLとcontrollerの対応表を作るための箱
@@ -22,6 +23,14 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     await createOrderController(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await deleteOrderController(req, res);
   } catch (error) {
     next(error);
   }

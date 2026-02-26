@@ -27,3 +27,16 @@ export const createOrder = async (user_id: number, total_price: number) => {
     throw error;
   }
 };
+
+export const deleteOrder = async (id: number) => {
+  try {
+    const result = await pool.query(
+      `DELETE FROM "order" WHERE id = $1 RETURNING *`,
+      [id],
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("DBクエリエラー", error);
+    throw error;
+  }
+};
